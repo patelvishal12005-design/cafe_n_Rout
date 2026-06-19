@@ -1,0 +1,501 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - The Cozy Bean Cafe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- Reset & Base Styles --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #fcfbfa;
+            color: #333;
+            overflow-x: hidden;
+            padding-top: 121px; /* Navbar height adjustment */
+        }
+
+        /* --- Navbar Styles --- */
+        .navbar {
+            background-color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 10%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 111px;
+            width: 111px;
+            border-radius: 50%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .logo img:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 35px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #000000;
+            font-weight: 400;
+            font-size: 18px;
+            transition: color 0.3s ease;
+            position: relative;
+            padding: 8px 0;
+        }
+
+        .nav-links a:hover {
+            color: #da7f00;
+        }
+
+        /* Active Link Underline Effect - Is baar ABOUT active hai */
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #ac8145; /* Elite Gold Accent */
+            transform: scaleX(1);
+        }
+
+        /* --- Mobile Toggle Button --- */
+        .toggle-btn {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            z-index: 1001;
+        }
+
+        .toggle-btn .bar {
+            height: 3px;
+            width: 25px;
+            background-color: #333;
+            margin: 4px 0;
+            border-radius: 2px;
+            transition: 0.3s ease;
+        }
+
+        /* --- About Hero Banner --- */
+        .about-hero {
+            height: 40vh;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://static.vecteezy.com/system/resources/thumbnails/050/927/928/small/cozy-coffee-shop-interior-with-espresso-machines-fresh-pastries-on-display-and-some-green-plants-small-local-business-concept-banner-photo.jpeg') no-repeat center center/cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #fff;
+        }
+
+        .about-hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            letter-spacing: 2px;
+        }
+
+        /* --- Our Story Section --- */
+        .story-section {
+            padding: 80px 10%;
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            background-color: #ffffff;
+        }
+
+        .story-content {
+            flex: 1;
+        }
+
+        .story-content h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #2c2c2c;
+        }
+
+        .story-content p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .story-img {
+            flex: 0.7;
+        }
+
+        .story-img img {
+            width: 100%;
+            max-height: 450px;
+            object-fit: cover;
+            border-radius: 22px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        /* --- Features/Values Section (Premium Blocks) --- */
+        .values-section {
+            padding: 80px 10%;
+            text-align: center;
+            background-color: #fcfbfa;
+        }
+
+        .values-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: #2c2c2c;
+        }
+
+        .values-grid {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        .value-card {
+            background: #ffffff;
+            padding: 40px 30px;
+            border-radius: 15px;
+            flex: 1;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.02);
+            transition: transform 0.3s ease;
+        }
+
+        .value-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .value-card i {
+            font-size: 2.5rem;
+            color: #ac8145;
+            margin-bottom: 20px;
+        }
+
+        .value-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #2c2c2c;
+        }
+
+        .value-card p {
+            font-size: 1rem;
+            color: #777;
+            line-height: 1.6;
+        }
+
+        /* --- Footer Styles (Social Icons Last Me) --- */
+        .footer {
+            background-color: #ffffff;
+            border-top: 1px solid #f0ede9;
+            padding: 40px 10%;
+            text-align: center;
+        }
+
+        .footer p {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: #fcfbfa;
+            color: #2c2c2c;
+            text-decoration: none;
+            font-size: 1.3rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        /* Brand Colors on Hover */
+        .social-icons a.insta:hover { background-color: #e1306c; color: white; transform: translateY(-3px); }
+        .social-icons a.fb:hover { background-color: #1877f2; color: white; transform: translateY(-3px); }
+        .social-icons a.twitter:hover { background-color: #1da1f2; color: white; transform: translateY(-3px); }
+        .social-icons a.whatsapp:hover { background-color: #25d366; color: white; transform: translateY(-3px); }
+
+        /* --- Floating WhatsApp Button --- */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: #25d366;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            background-color: #20ba5a;
+        }
+
+        .whatsapp-float::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #25d366;
+            border-radius: 50%;
+            z-index: -1;
+            animation: whatsapp-pulse 2s infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes whatsapp-pulse {
+            0% { transform: scale(1); opacity: 0.7; }
+            100% { transform: scale(1.4); opacity: 0; }
+        }
+
+        /* --- Scroll Animation Styles --- */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .scroll-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Delays for cascading effects */
+        .delay-1 { transition-delay: 0.2s; }
+        .delay-2 { transition-delay: 0.4s; }
+        .delay-3 { transition-delay: 0.6s; }
+
+        /* --- Responsive Media Queries --- */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 85px;
+            }
+
+            .navbar {
+                padding: 5px 5%;
+            }
+
+            .logo img {
+                height: 75px;
+                width: 75px;
+            }
+
+            .toggle-btn {
+                display: flex;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 85px; 
+                right: -100%;
+                background-color: #ffffff;
+                width: 100%;
+                height: calc(100vh - 85px);
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding-top: 50px;
+                transition: 0.4s ease-in-out;
+                box-shadow: 0 10px 15px rgba(0,0,0,0.05);
+            }
+
+            .nav-links li {
+                margin: 20px 0;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .toggle-btn.open .bar:nth-child(1) { transform: translateY(11px) rotate(45deg); }
+            .toggle-btn.open .bar:nth-child(2) { opacity: 0; }
+            .toggle-btn.open .bar:nth-child(3) { transform: translateY(-11px) rotate(-45deg); }
+
+            .about-hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .story-section {
+                flex-direction: column-reverse;
+                padding: 40px 5%;
+                gap: 40px;
+                text-align: center;
+            }
+
+            .values-grid {
+                flex-direction: column;
+                gap: 20px;
+                padding: 0 5%;
+            }
+
+            .whatsapp-float {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="{% url 'home' %}" class="logo">
+            <img src="{% static 'images/logo.png' %}" alt="The Cozy Bean Cafe Logo">
+        </a>
+        
+        <button class="toggle-btn" id="mobile-menu-btn" aria-label="Toggle Navigation">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+
+        <ul class="nav-links" id="nav-list">
+            <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+            <li><a href="{% url 'about' %}" class="nav-link active">About</a></li>
+            <li><a href="{% url 'gallery' %}" class="nav-link">Gallery</a></li>
+            <li><a href="{% url 'contact' %}" class="nav-link">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section class="about-hero">
+        <h1 class="scroll-reveal">Our Journey</h1>
+    </section>
+
+    <section class="story-section">
+        <div class="story-content scroll-reveal">
+            <h2>Crafting Premium Coffee Experiences</h2>
+            <p>Started with a simple passion for exceptional coffee, The Cozy Bean Cafe has grown into a sanctuary for coffee lovers. We source the finest artisanal beans, roasting them to perfection to ensure every cup tells a story of quality and luxury.</p>
+            <p>Our mission is simple: to provide an elevated escape from the daily hustle, where premium flavors meet timeless comfort. Whether you're here to work, relax, or celebrate, we welcome you to our family.</p>
+        </div>
+        <div class="story-img scroll-reveal delay-1">
+            <img src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAEyn9qr7H4YjztvAhSLrf_AO_DhtghVDXE1P-H7lz1wCH7Y3348EGK-f7B8vj0z1aI62IZrArH40Jz8dA5dT8faMD_u7bHhX5iB-fV4E14xalSQ1U4oNLIXoSl6JfYkTWUuod5LVGjvqfX6=s1360-w1360-h1020-rw" alt="Our Premium Brewing Process">
+        </div>
+    </section>
+
+    <section class="values-section">
+        <h2 class="scroll-reveal">Why Choose Us?</h2>
+        <div class="values-grid">
+            <div class="value-card scroll-reveal">
+                <i class="fas fa-gem"></i>
+                <h3>Artisanal Beans</h3>
+                <p>We source only premium grade, sustainably harvested single-origin beans.</p>
+            </div>
+            <div class="value-card scroll-reveal delay-1">
+                <i class="fas fa-heart"></i>
+                <h3>Brewed with Passion</h3>
+                <p>Our expert baristas craft every single cup with ultimate precision and love.</p>
+            </div>
+            <div class="value-card scroll-reveal delay-2">
+                <i class="fas fa-couch"></i>
+                <h3>Elite Vibe</h3>
+                <p>An aesthetic and peaceful space designed for luxury comfort and business meets.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer scroll-reveal">
+        <p>© 2026 Cafe En Route. All Rights Reserved. Crafted with Luxury.</p>
+        <div class="social-icons">
+            <a href="#" class="insta" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="fb" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="twitter" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="whatsapp" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/919328484806?text=Hello!%20I%20want%20to%20know%20more%20about%20your%20cafe%20menu." class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        // --- Mobile Menu Logic ---
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const navList = document.getElementById('nav-list');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navList.classList.toggle('active');
+            mobileMenuBtn.classList.toggle('open');
+        });
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navList.classList.remove('active');
+                mobileMenuBtn.classList.remove('open');
+            });
+        });
+
+        // --- Scroll Reveal Logic ---
+        const revealElements = document.querySelectorAll('.scroll-reveal');
+
+        const aboutObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Stops observing once animated
+                }
+            });
+        }, {
+            threshold: 0.12 // Triggers when 12% of element is visible
+        });
+
+        revealElements.forEach(el => aboutObserver.observe(el));
+    </script>
+
+</body>
+</html>

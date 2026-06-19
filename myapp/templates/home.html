@@ -1,0 +1,475 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafe En Route</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- Reset & Base Styles --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #fcfbfa;
+            color: #333;
+            overflow-x: hidden;
+            padding-top: 121px; /* Desktop navbar height adjustment to avoid hero cut */
+        }
+
+        /* --- Navbar Styles (Pure White & No Cuts) --- */
+        .navbar {
+            background-color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 10%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        /* --- Logo Round Styling Updated --- */
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 111px;          /* Desktop Logo Height */
+            width: 111px;           /* Desktop Logo Width */
+            border-radius: 50%;     /* Perfect circle */
+            object-fit: cover;      /* Stretch proof */
+            transition: transform 0.3s ease;
+        }
+
+        .logo img:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 35px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #000000;
+            font-weight: 400;
+            font-size: 18px;
+            transition: color 0.3s ease;
+            position: relative;
+            padding: 8px 0;
+        }
+
+        .nav-links a:hover {
+            color: #da7f00;
+        }
+
+        /* Active Link Underline Effect */
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #000000; /* Elite Gold Accent */
+            transform: scaleX(1);
+        }
+
+        /* --- Mobile Toggle Button --- */
+        .toggle-btn {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            z-index: 1001; /* Layer button above mobile drawer */
+        }
+
+        .toggle-btn .bar {
+            height: 3px;
+            width: 25px;
+            background-color: #333;
+            margin: 4px 0;
+            border-radius: 2px;
+            transition: 0.3s ease;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            height: calc(100vh - 121px); /* Navbar adjustment */
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://static.vecteezy.com/system/resources/thumbnails/050/927/928/small/cozy-coffee-shop-interior-with-espresso-machines-fresh-pastries-on-display-and-some-green-plants-small-local-business-concept-banner-photo.jpeg') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #fff;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            font-weight: 300;
+            max-width: 600px;
+        }
+
+        /* --- Global Buttons --- */
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #ac8145;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #a4875e;
+            transform: translateY(-2px);
+        }
+
+        /* --- Main Wrapper for Intro --- */
+        .about-wrapper {
+            background-color: #ffffff;
+            padding-top: 40px;
+        }
+
+        /* --- Side-by-Side Content Section --- */
+        .intro-section {
+            padding: 40px 10% 60px 10%;
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .intro-img {
+            flex: 0.9;
+        }
+
+        .intro-img img {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 22px;
+        }
+
+        .intro-content {
+            flex: 1;
+        }
+
+        .intro-content h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #2c2c2c;
+        }
+
+        .intro-content p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        /* --- Alag Theme Line / Strip for Social Icons --- */
+        .social-theme-line {
+            width: 100%;
+            background-color: #fcfbfa;
+            border-top: 1px solid #f0ede9;
+            border-bottom: 1px solid #f0ede9;
+            padding: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 25px;
+        }
+
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: #ffffff;
+            color: #2c2c2c;
+            text-decoration: none;
+            font-size: 1.3rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        /* Brand Colors on Hover */
+        .social-icons a.insta:hover { background-color: #e1306c; color: white; transform: translateY(-3px); }
+        .social-icons a.fb:hover { background-color: #1877f2; color: white; transform: translateY(-3px); }
+        .social-icons a.twitter:hover { background-color: #1da1f2; color: white; transform: translateY(-3px); }
+        .social-icons a.whatsapp:hover { background-color: #25d366; color: white; transform: translateY(-3px); }
+
+
+        /* --- Floating WhatsApp Button (Pratha Silver Style) --- */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: #25d366;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 9999; /* Isse button hamesha sabse upar dikhega */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            background-color: #20ba5a;
+        }
+
+        /* Ping/Pulse animation jisse user ka dhyan button par jaye */
+        .whatsapp-float::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #25d366;
+            border-radius: 50%;
+            z-index: -1;
+            animation: whatsapp-pulse 2s infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes whatsapp-pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(1.4);
+                opacity: 0;
+            }
+        }
+
+        /* --- Scroll Animation Styles --- */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .scroll-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Delivery delays for sequential smooth effects */
+        .delay-1 { transition-delay: 0.2s; }
+        .delay-2 { transition-delay: 0.4s; }
+
+
+        /* --- Responsive Media Queries --- */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 85px; /* Mobile navbar space adjustment to avoid hero cut */
+            }
+
+            .navbar {
+                padding: 5px 5%;
+            }
+
+            /* Mobile par logo cut hone se bachane ke liye size chota kiya */
+            .logo img {
+                height: 75px;
+                width: 75px;
+            }
+
+            .toggle-btn {
+                display: flex;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 85px; 
+                right: -100%;
+                background-color: #ffffff;
+                width: 100%;
+                height: calc(100vh - 85px);
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding-top: 50px;
+                transition: 0.4s ease-in-out;
+                box-shadow: 0 10px 15px rgba(0,0,0,0.05);
+            }
+
+            .nav-links li {
+                margin: 20px 0;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .toggle-btn.open .bar:nth-child(1) {
+                transform: translateY(11px) rotate(45deg);
+            }
+            .toggle-btn.open .bar:nth-child(2) {
+                opacity: 0;
+            }
+            .toggle-btn.open .bar:nth-child(3) {
+                transform: translateY(-11px) rotate(-45deg);
+            }
+
+            .hero {
+                height: calc(100vh - 85px);
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .intro-section {
+                flex-direction: column;
+                padding: 40px 5%;
+                gap: 30px;
+                text-align: center;
+            }
+
+            /* Mobile par WhatsApp button ko thoda chota aur thoda upar shift kiya */
+            .whatsapp-float {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="#" class="logo">
+            <img src="{% static 'images/logo.png' %}" alt="The Cozy Bean Cafe Logo">
+        </a>
+        
+        <button class="toggle-btn" id="mobile-menu-btn" aria-label="Toggle Navigation">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+
+        <ul class="nav-links" id="nav-list">
+            <li><a href="{% url 'home' %}" class="nav-link active">Home</a></li>
+            <li><a href="{% url 'about' %}" class="nav-link">About</a></li>
+            <li><a href="{% url 'gallery' %}" class="nav-link">Gallery</a></li>
+            <li><a href="{% url 'contact' %}" class="nav-link">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero" id="home">
+        <h1 class="scroll-reveal">Freshly Brewed Happiness</h1>
+        <p class="scroll-reveal delay-1">Start your day with our signature artisan coffee and freshly baked delights crafted with love.</p>
+        <a href="#about" class="btn scroll-reveal delay-2">Explore More</a>
+    </section>
+
+    <div class="about-wrapper" id="about">
+        <section class="intro-section">
+            <div class="intro-img scroll-reveal">
+                <img src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAHF_tSF010-M6ZdLSSqqkcljhoy7giLxh8UqaSOCOGPB24sT4lktWHHPTC4-qzVbi2c2pbZ2B4rQup5wre9uDD69RjWCaudeUg6AYf9cH8tmxwHbeurGszmdY1p61dSdht2kKmGpkrWcRAN=s1360-w1360-h1020-rw" alt="Our Cozy Corner">
+            </div>
+            <div class="intro-content scroll-reveal delay-1">
+                <h2>Our Little Coffee Corner</h2>
+                <p>We believe that a good cup of coffee can completely change your day. Step into our cozy space, enjoy the rich aroma of freshly ground artisan beans, and let our handcrafted treats make your moments special.</p>
+                
+                <a href="https://www.google.com/search?q=cafe+en+route&rlz=1C1GCEA_en-GBIN1160IN1160&oq=cafe&gs_lcrp=EgZjaHJvbWUqDggAEEUYJxg7GIAEGIoFMg4IABBFGCcYOxiABBiKBTIGCAEQRRg5MgYIAhBFGDsyDggDEEUYJxg7GIAEGIoFMg0IBBAAGJIDGIAEGIoFMgYIBRBFGDwyBggGEEUYPDIGCAcQRRg90gEHNjY1ajBqN6gCALACAA&sourceid=chrome&ie=UTF-8" class="btn" target="_blank">Visit Now</a>
+            </div>
+        </section>
+
+        <div class="social-theme-line scroll-reveal">
+            <div class="social-icons">
+                <a href="#" class="insta" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="fb" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="twitter" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="whatsapp" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <a href="https://wa.me/919328484806?text=Hello!%20I%20want%20to%20know%20more%20about%20your%20cafe%20menu." class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        // --- Mobile Menu Logic ---
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const navList = document.getElementById('nav-list');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navList.classList.toggle('active');
+            mobileMenuBtn.classList.toggle('open');
+        });
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navList.classList.remove('active');
+                mobileMenuBtn.classList.remove('open');
+            });
+        });
+
+        // --- Scroll Reveal Animation Logic ---
+        const revealElements = document.querySelectorAll('.scroll-reveal');
+
+        const rowObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Ek baar animate hone ke baad check karna band kar dega (Performance better hoti hai)
+                }
+            });
+        }, {
+            threshold: 0.15 // Jab element 15% screen par dikhega tab trigger hoga
+        });
+
+        revealElements.forEach(el => rowObserver.observe(el));
+    </script>
+
+</body>
+</html>

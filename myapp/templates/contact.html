@@ -1,0 +1,549 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Cafe En Route</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght=300;400;600&family=Playfair+Display:ital,wght=0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- Reset & Base Styles --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #fcfbfa;
+            color: #333;
+            overflow-x: hidden;
+            padding-top: 121px; /* Navbar gap adjustment synchronized with home.html */
+        }
+
+        /* --- Navbar Styles (Premium White) --- */
+        .navbar {
+            background-color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 10%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        /* Fixed Class Logo Structure to mirror home.html */
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 111px;
+            width: 111px;
+            border-radius: 50%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .logo img:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 35px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #000000;
+            font-weight: 400;
+            font-size: 18px;
+            transition: color 0.3s ease;
+            position: relative;
+            padding: 8px 0;
+        }
+
+        .nav-links a:hover {
+            color: #da7f00;
+        }
+
+        /* Active Link Underline Effect - Synchronized to gold */
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #ac8145; 
+            transform: scaleX(1);
+        }
+
+        .toggle-btn {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            z-index: 1001;
+        }
+
+        .toggle-btn .bar {
+            height: 3px;
+            width: 25px;
+            background-color: #333;
+            margin: 4px 0;
+            border-radius: 2px;
+            transition: 0.3s ease;
+        }
+
+        /* --- Contact Page Container --- */
+        .contact-container {
+            padding: 60px 10%;
+            text-align: center;
+        }
+
+        .contact-container h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: #2c2c2c;
+            margin-bottom: 10px;
+        }
+
+        .contact-container p.subtitle {
+            color: #777;
+            font-size: 1.1rem;
+            margin-bottom: 50px;
+        }
+
+        /* Side-by-Side Flex Layout for Form & Info */
+        .contact-wrapper {
+            display: flex;
+            gap: 50px;
+            text-align: left;
+        }
+
+        .contact-form-section {
+            flex: 1.3;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+        }
+
+        .contact-info-section {
+            flex: 0.9;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* --- Django Messages Styling --- */
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-size: 1rem;
+            border-left: 5px solid #28a745;
+        }
+
+        /* --- Form Elements --- */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 8px;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #e2deda;
+            background-color: #fcfbfa;
+            border-radius: 8px;
+            font-size: 1rem;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #ac8145;
+            background-color: #ffffff;
+            box-shadow: 0 0 8px rgba(172, 129, 69, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #ac8145;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #a4875e;
+            transform: translateY(-2px);
+        }
+
+        /* --- Info Cards --- */
+        .info-card {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.02);
+            transition: transform 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .info-card i {
+            font-size: 2rem;
+            color: #ac8145;
+            background: #fcfbfa;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .info-card h3 {
+            font-size: 1.1rem;
+            color: #2c2c2c;
+            margin-bottom: 5px;
+        }
+
+        .info-card p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* --- Footer (Social Icons Last) --- */
+        .footer {
+            background-color: #ffffff;
+            border-top: 1px solid #f0ede9;
+            padding: 40px 10%;
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        .footer p {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: #fcfbfa;
+            color: #2c2c2c;
+            text-decoration: none;
+            font-size: 1.3rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a.insta:hover { background-color: #e1306c; color: white; transform: translateY(-3px); }
+        .social-icons a.fb:hover { background-color: #1877f2; color: white; transform: translateY(-3px); }
+        .social-icons a.twitter:hover { background-color: #1da1f2; color: white; transform: translateY(-3px); }
+        .social-icons a.whatsapp:hover { background-color: #25d366; color: white; transform: translateY(-3px); }
+
+        /* --- Floating WhatsApp With Dynamic Pulse Effect --- */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: #25d366;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-float:hover { 
+            transform: scale(1.1); 
+            background-color: #20ba5a; 
+        }
+
+        /* Pulse wave animation elements */
+        .whatsapp-float::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #25d366;
+            border-radius: 50%;
+            z-index: -1;
+            animation: whatsapp-pulse 2s infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes whatsapp-pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(1.4);
+                opacity: 0;
+            }
+        }
+
+        /* --- SCROLL REVEAL ANIMATION SYSTEM --- */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(35px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .scroll-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Staggered Loading Delays */
+        .delay-1 { transition-delay: 0.15s; }
+        .delay-2 { transition-delay: 0.3s; }
+        .delay-3 { transition-delay: 0.45s; }
+        .delay-4 { transition-delay: 0.6s; }
+
+        /* --- Responsive View --- */
+        @media (max-width: 968px) {
+            .contact-wrapper {
+                flex-direction: column;
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body { padding-top: 85px; }
+            .navbar { padding: 5px 5%; }
+            .logo img { height: 75px; width: 75px; }
+            .toggle-btn { display: flex; }
+            .nav-links {
+                position: absolute;
+                top: 85px; right: -100%;
+                background-color: #ffffff;
+                width: 100%;
+                height: calc(100vh - 85px);
+                flex-direction: column;
+                align-items: center;
+                padding-top: 50px;
+                transition: 0.4s ease-in-out;
+                box-shadow: 0 10px 15px rgba(0,0,0,0.05);
+            }
+            .nav-links li { margin: 20px 0; }
+            .nav-links.active { right: 0; }
+            
+            /* Burger menu cross animation support in contact */
+            .toggle-btn.open .bar:nth-child(1) { transform: translateY(11px) rotate(45deg); }
+            .toggle-btn.open .bar:nth-child(2) { opacity: 0; }
+            .toggle-btn.open .bar:nth-child(3) { transform: translateY(-11px) rotate(-45deg); }
+
+            .contact-container h1 { font-size: 2.2rem; }
+            .contact-form-section { padding: 25px; }
+
+            .whatsapp-float {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="{% url 'home' %}" class="logo">
+            <img src="{% static 'images/logo.png' %}" alt="Logo">
+        </a>
+        
+        <button class="toggle-btn" id="mobile-menu-btn">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+
+        <ul class="nav-links" id="nav-list">
+            <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+            <li><a href="{% url 'about' %}" class="nav-link">About</a></li>
+            <li><a href="{% url 'gallery' %}" class="nav-link">Gallery</a></li>
+            <li><a href="{% url 'contact' %}" class="nav-link active">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section class="contact-container">
+        <h1 class="scroll-reveal">Connect With Us</h1>
+        <p class="subtitle scroll-reveal delay-1">We would love to hear from you. Drop us a message or visit our little corner.</p>
+
+        <div class="contact-wrapper">
+            
+            <div class="contact-form-section scroll-reveal delay-1">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert-success">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" placeholder="Tell us how we can serve you better..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Send Message</button>
+                </form>
+            </div>
+
+            <div class="contact-info-section">
+                <div class="info-card scroll-reveal delay-1">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <h3>Our Location</h3>
+                        <p>Ground Floor, Aditya Plaza, 4, Jodhpur Cross Rd, opp. Karnvati Apartments, Jodhpur Village, Ahmedabad, Gujarat 380015</p>
+                    </div>
+                </div>
+
+                <div class="info-card scroll-reveal delay-2">
+                    <i class="fas fa-phone-alt"></i>
+                    <div>
+                        <h3>Call Us</h3>
+                        <p>+91 93284 84806</p>
+                    </div>
+                </div>
+
+                <div class="info-card scroll-reveal delay-3">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <h3>Email Us</h3>
+                        <p>love@cafenroute.com</p>
+                    </div>
+                </div>
+
+                <div class="info-card scroll-reveal delay-4">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <h3>Opening Hours</h3>
+                        <p>Mon - Sun: 11:00 AM - 12:00 AM</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="footer scroll-reveal">
+        <p>© 2026 Cafe En Route. All Rights Reserved. Crafted with Luxury.</p>
+        <div class="social-icons">
+            <a href="#" class="insta" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="fb" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="twitter" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="whatsapp" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/919328484806?text=Hello!%20I%20want%20to%20know%20more%20about%20your%20cafe%20menu." class="whatsapp-float" target="_blank" rel="noopener noreferrer">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        // --- Mobile Menu Toggle ---
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const navList = document.getElementById('nav-list');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navList.classList.toggle('active');
+            mobileMenuBtn.classList.toggle('open');
+        });
+
+        // --- Intersection Observer Logic for Scroll Animations ---
+        const revealElements = document.querySelectorAll('.scroll-reveal');
+
+        const contactObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Element trigger hone ke baad track karna band kar dega (Performance Friendly)
+                }
+            });
+        }, {
+            threshold: 0.1 // Jab element screen par 10% dikhega tabhi slide up hoga
+        });
+
+        revealElements.forEach(el => contactObserver.observe(el));
+    </script>
+</body>
+</html>
