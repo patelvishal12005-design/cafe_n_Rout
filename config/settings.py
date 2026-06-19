@@ -30,7 +30,7 @@ DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']  # You will add your VPS IP and domain later
 
 
-GITHUB_REPO = "myusername/myproject"
+GITHUB_REPO = "patelvishal12005-design/cafe_n_Rout"
 # Application definition
 
 INSTALLED_APPS = [
